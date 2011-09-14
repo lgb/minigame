@@ -4,13 +4,13 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT			+= core gui opengl
 
-TARGET = minigame
-TEMPLATE = app
+TARGET		= minigame
+TEMPLATE	= app
 
 
-SOURCES += main.cpp\
-        widget.cpp
+SOURCES	+= src/main.cpp\
+				src/widget.cpp
 
-HEADERS  += widget.h
+HEADERS	+= src/widget.h
