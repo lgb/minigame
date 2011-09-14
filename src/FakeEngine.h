@@ -3,6 +3,8 @@
 
 #include <QGLWidget>
 
+class MiniGame;
+
 class FakeEngine : public QGLWidget
 {
 	Q_OBJECT
@@ -25,6 +27,8 @@ public:
 	static const char* textureNames[];
 	static unsigned int textureIDs[];
 
+private:
+	MiniGame * miniGame;
 };
 
 #endif // WIDGET_H

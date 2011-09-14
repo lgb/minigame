@@ -12,7 +12,9 @@ TEMPLATE	= app
 RESOURCES	= minigame.qrc
 
 SOURCES	+= src/main.cpp\
-				src/FakeEngine.cpp
+				src/FakeEngine.cpp \
+				src/Game.cpp
 
 HEADERS	+= src/FakeEngine.h \
-				src/MiniGameInterface.h
+				src/MiniGameInterface.h \
+				src/Game.h
