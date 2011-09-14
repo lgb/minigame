@@ -1,5 +1,7 @@
 #include "Game.h"
 
+#include "FakeEngine.h"
+
 MiniGame::~MiniGame(){}
 
 Game::Game()
@@ -25,7 +27,7 @@ bool Game::IsComplete() const
 
 void Game::Render() const
 {
-	static const struct Rect scr = {0, 0, 1, 1};
+	static const struct Rect scr = {0, 0, FakeEngine::width, FakeEngine::height};
 	static const struct Rect tex = {0, 0, 1, 1};
 	::Render(scr, cTextureId, tex);
 }

@@ -27,6 +27,8 @@ public:
 	static const char* textureNames[];
 	static unsigned int textureIDs[];
 
+	static const float width, height;
+
 private:
 	MiniGame * miniGame;
 };

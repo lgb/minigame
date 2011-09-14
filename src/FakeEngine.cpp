@@ -27,17 +27,22 @@ void FakeEngine::paintGL()
 {
 	glClear(GL_COLOR_BUFFER_BIT);
 	glLoadIdentity();
-
 	miniGame->Render();
 }
 
+const float FakeEngine::width = 512;
+const float FakeEngine::height = 512;
+
 void FakeEngine::resizeGL(int width, int height)
 {
+	assert(width == FakeEngine::width);
+	assert(height == FakeEngine::height);
+
 	glViewport(0, 0, width, height);
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	glOrtho(0, 1, 0, 1, -1, 1);
+	glOrtho(0, width, 0, height, -1, 1);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 }
