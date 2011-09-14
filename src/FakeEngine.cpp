@@ -21,31 +21,30 @@ void FakeEngine::initializeGL()
 	preloadTextures();
 	glEnable(GL_TEXTURE_2D);
 
-	glEnable(GL_DEPTH_TEST);
-	glDepthFunc(GL_LEQUAL);
-	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
-	glClearDepth(1);
+//	glEnable(GL_DEPTH_TEST);
+//	glDepthFunc(GL_LEQUAL);
+//	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+//	glClearDepth(1.0);
 }
 
 void FakeEngine::paintGL()
 {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT/* | GL_DEPTH_BUFFER_BIT*/);
 	glLoadIdentity();
 
-	glTranslatef(0.0, 0.0, -2.5);
 	glBindTexture(GL_TEXTURE_2D, textureIDs[0]);
 	glBegin(GL_QUADS);
 		 glTexCoord2f(0.0f, 0.0f);
-		 glVertex2f(-1.0f, -1.0f);
+		 glVertex2f(0.0f, 0.0f);
 
 		 glTexCoord2f(1.0f, 0.0f);
-		 glVertex2f(1.0f, -1.0f);
+		 glVertex2f(1.0f, 0.0f);
 
 		 glTexCoord2f(1.0f, 1.0f);
-		 glVertex2f(1.0f,  1.0f);
+		 glVertex2f(1.0f, 1.0f);
 
 		 glTexCoord2f(0.0f, 1.0f);
-		 glVertex2f(-1.0f,  1.0f);
+		 glVertex2f(0.0f, 1.0f);
 	glEnd();
 }
 
@@ -55,7 +54,8 @@ void FakeEngine::resizeGL(int width, int height)
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(45.0f, (GLfloat)width / (GLfloat)height, 0.1, 100.0);
+//	gluPerspective(45.0f, (GLfloat)width / (GLfloat)height, 0.1, 100.0);
+	glOrtho(0, 1, 0, 1, -1, 1);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 }
