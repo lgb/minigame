@@ -2,6 +2,7 @@
 #include <QtOpenGL>
 
 #include "FakeEngine.h"
+#include "MiniGameInterface.h"
 
 FakeEngine::FakeEngine(QWidget *parent)
 	: QGLWidget(parent)
@@ -32,20 +33,9 @@ void FakeEngine::paintGL()
 	glClear(GL_COLOR_BUFFER_BIT/* | GL_DEPTH_BUFFER_BIT*/);
 	glLoadIdentity();
 
-	glBindTexture(GL_TEXTURE_2D, textureIDs[0]);
-	glBegin(GL_QUADS);
-		 glTexCoord2f(0.0f, 0.0f);
-		 glVertex2f(0.0f, 0.0f);
-
-		 glTexCoord2f(1.0f, 0.0f);
-		 glVertex2f(1.0f, 0.0f);
-
-		 glTexCoord2f(1.0f, 1.0f);
-		 glVertex2f(1.0f, 1.0f);
-
-		 glTexCoord2f(0.0f, 1.0f);
-		 glVertex2f(0.0f, 1.0f);
-	glEnd();
+	static const struct Rect scr = {0, 0, 1, 1};
+	static const struct Rect tex = {0, 0, 1, 1};
+	Render(scr, 1, tex);
 }
 
 void FakeEngine::resizeGL(int width, int height)
@@ -94,4 +84,22 @@ void FakeEngine::preloadTextures()
 void FakeEngine::unloadTextures()
 {
 	glDeleteTextures(numTextures, textureIDs);
+}
+
+void Render(const Rect& screenCoords, int textureId, const Rect& textureCoord)
+{
+	glBindTexture(GL_TEXTURE_2D, FakeEngine::textureIDs[textureId - 1]);
+	glBegin(GL_QUADS);
+		 glTexCoord2f(textureCoord.left, textureCoord.top);
+		 glVertex2f(screenCoords.left, screenCoords.top);
+
+		 glTexCoord2f(textureCoord.right, textureCoord.top);
+		 glVertex2f(screenCoords.right, screenCoords.top);
+
+		 glTexCoord2f(textureCoord.right, textureCoord.bottom);
+		 glVertex2f(screenCoords.right, screenCoords.bottom);
+
+		 glTexCoord2f(textureCoord.left, textureCoord.bottom);
+		 glVertex2f(screenCoords.left, screenCoords.bottom);
+	glEnd();
 }
