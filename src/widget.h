@@ -1,15 +1,22 @@
 #ifndef WIDGET_H
 #define WIDGET_H
 
-#include <QtGui/QWidget>
+#include <QGLWidget>
 
-class Widget : public QWidget
+class FakeEngine : public QGLWidget
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    Widget(QWidget *parent = 0);
-    ~Widget();
+	FakeEngine(QWidget *parent = 0);
+	~FakeEngine();
+
+protected:
+	void initializeGL();
+	void paintGL();
+	void resizeGL(int width, int height);
+	void mousePressEvent(QMouseEvent *event);
+
 };
 
 #endif // WIDGET_H
