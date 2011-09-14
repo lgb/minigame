@@ -17,6 +17,14 @@ protected:
 	void resizeGL(int width, int height);
 	void mousePressEvent(QMouseEvent *event);
 
+public:
+	static void preloadTextures();
+	static void unloadTextures();
+
+	static const size_t numTextures;
+	static const char* textureNames[];
+	static unsigned int textureIDs[];
+
 };
 
 #endif // WIDGET_H
