@@ -1,7 +1,7 @@
 #include <QtGui>
 #include <QtOpenGL>
 
-#include "widget.h"
+#include "FakeEngine.h"
 
 FakeEngine::FakeEngine(QWidget *parent)
 	: QGLWidget(parent)

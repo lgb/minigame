@@ -9,8 +9,9 @@ QT			+= core gui opengl
 TARGET		= minigame
 TEMPLATE	= app
 
+RESOURCES	= minigame.qrc
 
 SOURCES	+= src/main.cpp\
-				src/widget.cpp
+				src/FakeEngine.cpp
 
-HEADERS	+= src/widget.h
+HEADERS	+= src/FakeEngine.h
