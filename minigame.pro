@@ -14,4 +14,5 @@ RESOURCES	= minigame.qrc
 SOURCES	+= src/main.cpp\
 				src/FakeEngine.cpp
 
-HEADERS	+= src/FakeEngine.h
+HEADERS	+= src/FakeEngine.h \
+				src/MiniGameInterface.h
