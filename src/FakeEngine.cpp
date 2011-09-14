@@ -61,7 +61,7 @@ const size_t FakeEngine::numTextures = 1;
 const char* FakeEngine::textureNames[numTextures] = { ":/res/image.png" };
 unsigned int FakeEngine::textureIDs[numTextures] = { 0 };
 
-void FakeEngine::preloadTextures()
+/* static */ void FakeEngine::preloadTextures()
 {
 	QImage image, texture;
 
@@ -82,7 +82,7 @@ void FakeEngine::preloadTextures()
 	}
 }
 
-void FakeEngine::unloadTextures()
+/* static */ void FakeEngine::unloadTextures()
 {
 	glDeleteTextures(numTextures, textureIDs);
 }
