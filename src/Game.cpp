@@ -21,10 +21,10 @@ Game::Game()
 
 /* virtual */ void Game::Initialize()
 {
+	srand(time(NULL));
+	selectedBlock = -1;
 	calcBlocks();
 	mixBlocks();
-	selectedBlock = -1;
-	srand(time(NULL));
 }
 
 /* virtual */ void Game::Click(float x, float y)
