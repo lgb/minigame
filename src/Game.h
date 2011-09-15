@@ -3,13 +3,6 @@
 
 #include "MiniGameInterface.h"
 
-struct Block
-{
-	const Rect texRect;
-	const int originalPos;
-	int currentPos;
-};
-
 class Game
 	: public MiniGame
 {
@@ -25,14 +18,17 @@ public:
 private:
 	void calcBlocks();
 	void mixBlocks();
-	const Rect& blockRect(const int num) const;
+	const Rect & blockRect(const int num) const;
 	int blockNum(const float x, const float y) const;
-	const Rect& normalizeTexCoords(const Rect & origin) const;
+	const Rect & normalizeTexCoords(const Rect & origin) const;
 
 	const int blocksNum;
 	const float blockWidth;
 	const float blockHeight;
-	Rect * blocks;
+	Rect * blocksCoords;
+	int * blocks;
+
+	int selectedBlock; // -1 for none
 };
 
 #endif // MINIGAME_H

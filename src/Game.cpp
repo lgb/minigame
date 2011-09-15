@@ -8,15 +8,18 @@ Game::Game()
 	: blocksNum(cColumns * cRows)
 	, blockWidth(FakeEngine::width / cColumns)
 	, blockHeight(FakeEngine::height / cRows)
+	, selectedBlock(-1)
 {
-	blocks = new Rect[blocksNum];
+	blocksCoords = new Rect[blocksNum];
 	calcBlocks();
+	blocks = new int[blocksNum];
 	mixBlocks();
 }
 
 /* virtual */ Game::~Game()
 {
 	delete [] blocks;
+	delete [] blocksCoords;
 }
 
 /* virtual */ void Game::Initialize()
@@ -25,6 +28,29 @@ Game::Game()
 
 /* virtual */ void Game::Click(float x, float y)
 {
+	if (-1 == selectedBlock)
+	{
+		selectedBlock = blockNum(x, y);
+		return;
+	}
+
+	const int otherBlock = blockNum(x, y);
+
+	if (otherBlock != selectedBlock)
+	{
+		int beforeS = blocks[selectedBlock];
+		int beforeO = blocks[otherBlock];
+
+
+		int t = blocks[selectedBlock];
+		blocks[selectedBlock] = blocks[otherBlock];
+		blocks[otherBlock] = t;
+
+		int afterS = blocks[selectedBlock];
+		int afterO = blocks[otherBlock];
+		selectedBlock = -1;
+	}
+	selectedBlock = -1;
 }
 
 /* virtual */ bool Game::IsComplete() const
@@ -34,14 +60,25 @@ Game::Game()
 
 /* virtual */ void Game::Render() const
 {
-	for (size_t i = 0; i < blocksNum; ++i)
+	for (int i = 0; i < blocksNum; ++i)
 	{
-		Rect texRect = normalizeTexCoords(blockRect(i));
-		Rect scrRect = blockRect(i);
-		scrRect.left += 1;
-		scrRect.top += 1;
-		scrRect.right -= 1;
-		scrRect.bottom -= 1;
+		Rect texRect = normalizeTexCoords(blockRect(blocks[i]));
+		const Rect scrRectOrigin = blockRect(i);
+		Rect scrRect;
+		if (blocks[i] == selectedBlock)
+		{
+			scrRect.left = scrRectOrigin.left - 1;
+			scrRect.top = scrRectOrigin.top - 1;
+			scrRect.right = scrRectOrigin.right + 1;
+			scrRect.bottom = scrRectOrigin.bottom + 1;
+		}
+		else
+		{
+			scrRect.left = scrRectOrigin.left + 3;
+			scrRect.top = scrRectOrigin.top + 3;
+			scrRect.right = scrRectOrigin.right - 3;
+			scrRect.bottom = scrRectOrigin.bottom - 3;
+		}
 
 		::Render(scrRect, cTextureId, texRect);
 	}
@@ -49,28 +86,32 @@ Game::Game()
 
 void Game::calcBlocks()
 {
-	for (size_t row = 0; row < cRows; ++row)
+	for (int row = 0; row < cRows; ++row)
 	{
-		for (size_t column = 0; column < cColumns; ++column)
+		for (int column = 0; column < cColumns; ++column)
 		{
-			const size_t currentBlock = column + row * cColumns;
+			const int currentBlock = column + row * cColumns;
 			assert(currentBlock < blocksNum);
 
-			blocks[currentBlock].left = column * blockWidth;
-			blocks[currentBlock].top = row * blockHeight;
-			blocks[currentBlock].right = (column + 1) * blockWidth;
-			blocks[currentBlock].bottom = (row + 1) * blockHeight;
+			blocksCoords[currentBlock].left = column * blockWidth;
+			blocksCoords[currentBlock].top = row * blockHeight;
+			blocksCoords[currentBlock].right = (column + 1) * blockWidth;
+			blocksCoords[currentBlock].bottom = (row + 1) * blockHeight;
 		}
 	}
 }
 
 void Game::mixBlocks()
 {
+	for (int i = 0; i < blocksNum; ++i)
+	{
+		blocks[i] = i;
+	}
 }
 
 const Rect& Game::blockRect(int num) const
 {
-	return blocks[num];
+	return blocksCoords[blocks[num]];
 }
 
 int Game::blockNum(float x, float y) const
@@ -81,13 +122,13 @@ int Game::blockNum(float x, float y) const
 }
 
 // преобразует из координат в пикселах в координаты [0..1]
+// причём (0, 0) - верхний левый угол картинки, а не нижний
 const Rect& Game::normalizeTexCoords(const Rect & origin) const
 {
 	static Rect rect;
 	rect.left = origin.left / FakeEngine::width;
-	rect.top = origin.top / FakeEngine::height;
+	rect.top = (FakeEngine::height - origin.top) / FakeEngine::height;
 	rect.right = origin.right / FakeEngine::width;
-	rect.bottom = origin.bottom / FakeEngine::height;
-
+	rect.bottom = (FakeEngine::height - origin.bottom) / FakeEngine::height;
 	return rect;
 }
