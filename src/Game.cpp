@@ -24,7 +24,6 @@ Game::Game()
 	calcBlocks();
 	mixBlocks();
 	selectedBlock = -1;
-
 	srand(time(NULL));
 }
 
@@ -102,21 +101,26 @@ void Game::calcBlocks()
 			blocksCoords[currentBlock].top = row * blockHeight;
 			blocksCoords[currentBlock].right = (column + 1) * blockWidth;
 			blocksCoords[currentBlock].bottom = (row + 1) * blockHeight;
+
+			blocks[currentBlock] = currentBlock;
 		}
 	}
 }
 
 void Game::mixBlocks()
 {
-	for (int i = 0; i < blocksNum; ++i)
-	{
-		blocks[i] = i;
-	}
-
+/*
 	for (int i = 0; i < blocksNum; ++i)
 	{
 		const int r = rand() % blocksNum;
 		swapBlocks(i, r);
+	}
+*/
+	for (int i = 0; i < rand() % blocksNum; ++i)
+	{
+		const int r = rand() % blocksNum;
+		const int l = rand() % blocksNum;
+		swapBlocks(l, r);
 	}
 }
 
