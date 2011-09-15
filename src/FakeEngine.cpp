@@ -8,7 +8,6 @@ FakeEngine::FakeEngine(QWidget *parent)
 	: QGLWidget(parent)
 {
 	miniGame = new Game();
-	miniGame->Initialize();
 }
 
 FakeEngine::~FakeEngine()
@@ -21,6 +20,7 @@ void FakeEngine::initializeGL()
 {
 	preloadTextures();
 	glEnable(GL_TEXTURE_2D);
+	miniGame->Initialize();
 }
 
 void FakeEngine::paintGL()

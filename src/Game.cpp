@@ -8,12 +8,9 @@ Game::Game()
 	: blocksNum(cColumns * cRows)
 	, blockWidth(FakeEngine::width / cColumns)
 	, blockHeight(FakeEngine::height / cRows)
-	, selectedBlock(-1)
 {
 	blocksCoords = new Rect[blocksNum];
-	calcBlocks();
 	blocks = new int[blocksNum];
-	mixBlocks();
 }
 
 /* virtual */ Game::~Game()
@@ -24,6 +21,9 @@ Game::Game()
 
 /* virtual */ void Game::Initialize()
 {
+	calcBlocks();
+	mixBlocks();
+	selectedBlock = -1;
 }
 
 /* virtual */ void Game::Click(float x, float y)
