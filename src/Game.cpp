@@ -24,38 +24,39 @@ Game::Game()
 	calcBlocks();
 	mixBlocks();
 	selectedBlock = -1;
+
+	srand(time(NULL));
 }
 
 /* virtual */ void Game::Click(float x, float y)
 {
-	if (-1 == selectedBlock)
+	const int otherBlock = blockNum(x, y);
+	// не двигать больше уже поставленные на место
+	if (otherBlock == blocks[otherBlock])
 	{
-		selectedBlock = blockNum(x, y);
 		return;
 	}
 
-	const int otherBlock = blockNum(x, y);
-
-	if (otherBlock != selectedBlock)
+	// выбрать, если ничего не выбрано
+	if (-1 == selectedBlock)
 	{
-		int beforeS = blocks[selectedBlock];
-		int beforeO = blocks[otherBlock];
-
-
-		int t = blocks[selectedBlock];
-		blocks[selectedBlock] = blocks[otherBlock];
-		blocks[otherBlock] = t;
-
-		int afterS = blocks[selectedBlock];
-		int afterO = blocks[otherBlock];
-		selectedBlock = -1;
+		selectedBlock = otherBlock;
+		return;
 	}
+	swapBlocks(selectedBlock, otherBlock);
 	selectedBlock = -1;
 }
 
 /* virtual */ bool Game::IsComplete() const
 {
-	return false;
+	for (int i = 0; i < blocksNum; ++i)
+	{
+		if (i != blocks[i])
+		{
+			return false;
+		}
+	}
+	return true;
 }
 
 /* virtual */ void Game::Render() const
@@ -65,20 +66,24 @@ Game::Game()
 		Rect texRect = normalizeTexCoords(blockRect(blocks[i]));
 		const Rect scrRectOrigin = blockRect(i);
 		Rect scrRect;
-		if (blocks[i] == selectedBlock)
+		int diff;
+		if (blocks[i] == i)
 		{
-			scrRect.left = scrRectOrigin.left - 1;
-			scrRect.top = scrRectOrigin.top - 1;
-			scrRect.right = scrRectOrigin.right + 1;
-			scrRect.bottom = scrRectOrigin.bottom + 1;
+			diff = 0;
+		}
+		else if (blocks[i] == selectedBlock)
+		{
+			diff = 2;
 		}
 		else
 		{
-			scrRect.left = scrRectOrigin.left + 3;
-			scrRect.top = scrRectOrigin.top + 3;
-			scrRect.right = scrRectOrigin.right - 3;
-			scrRect.bottom = scrRectOrigin.bottom - 3;
+			diff = 5;
 		}
+
+		scrRect.left = scrRectOrigin.left + diff;
+		scrRect.top = scrRectOrigin.top + diff;
+		scrRect.right = scrRectOrigin.right - diff;
+		scrRect.bottom = scrRectOrigin.bottom - diff;
 
 		::Render(scrRect, cTextureId, texRect);
 	}
@@ -107,6 +112,12 @@ void Game::mixBlocks()
 	{
 		blocks[i] = i;
 	}
+
+	for (int i = 0; i < blocksNum; ++i)
+	{
+		const int r = rand() % blocksNum;
+		swapBlocks(i, r);
+	}
 }
 
 const Rect& Game::blockRect(int num) const
@@ -119,6 +130,16 @@ int Game::blockNum(float x, float y) const
 	const int row = int(y / blockHeight);
 	const int column = int(x / blockWidth);
 	return column + row * cColumns;
+}
+
+void Game::swapBlocks(const int left, const int right)
+{
+	if (left != right)
+	{
+		const int t = blocks[left];
+		blocks[left] = blocks[right];
+		blocks[right] = t;
+	}
 }
 
 // преобразует из координат в пикселах в координаты [0..1]

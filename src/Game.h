@@ -20,6 +20,7 @@ private:
 	void mixBlocks();
 	const Rect & blockRect(const int num) const;
 	int blockNum(const float x, const float y) const;
+	void swapBlocks(const int left, const int right);
 	const Rect & normalizeTexCoords(const Rect & origin) const;
 
 	const int blocksNum;
