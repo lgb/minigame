@@ -63,28 +63,27 @@ Game::Game()
 	for (int i = 0; i < blocksNum; ++i)
 	{
 		Rect texRect = normalizeTexCoords(blockRect(blocks[i]));
-		const Rect scrRectOrigin = blockRect(i);
-		Rect scrRect;
-		int diff;
-		if (blocks[i] == i)
+		Rect scrRectOrigin = blockRect(i);
+		int indent;
+		if (blocks[i] == i)	// правильно поставленные идут без отступа
 		{
-			diff = 0;
+			indent = 0;
 		}
-		else if (blocks[i] == selectedBlock)
+		else if (blocks[i] == selectedBlock)	// выделенные с небольшим оступом
 		{
-			diff = 2;
+			indent = 2;
 		}
-		else
+		else						// у всех остальных отступ большой
 		{
-			diff = 5;
+			indent = 5;
 		}
 
-		scrRect.left = scrRectOrigin.left + diff;
-		scrRect.top = scrRectOrigin.top + diff;
-		scrRect.right = scrRectOrigin.right - diff;
-		scrRect.bottom = scrRectOrigin.bottom - diff;
+		scrRectOrigin.left += indent;
+		scrRectOrigin.top += indent;
+		scrRectOrigin.right -= indent;
+		scrRectOrigin.bottom -= indent;
 
-		::Render(scrRect, cTextureId, texRect);
+		::Render(scrRectOrigin, cTextureId, texRect);
 	}
 }
 
@@ -109,18 +108,10 @@ void Game::calcBlocks()
 
 void Game::mixBlocks()
 {
-/*
 	for (int i = 0; i < blocksNum; ++i)
 	{
 		const int r = rand() % blocksNum;
 		swapBlocks(i, r);
-	}
-*/
-	for (int i = 0; i < rand() % blocksNum; ++i)
-	{
-		const int r = rand() % blocksNum;
-		const int l = rand() % blocksNum;
-		swapBlocks(l, r);
 	}
 }
 
