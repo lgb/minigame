@@ -1,6 +1,8 @@
 #include <QtGui>
 #include <QtOpenGL>
 
+#include <cassert>
+
 #include "FakeEngine.h"
 #include "Game.h"
 
